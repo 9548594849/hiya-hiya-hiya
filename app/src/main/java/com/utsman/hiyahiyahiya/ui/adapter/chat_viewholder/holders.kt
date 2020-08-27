@@ -6,7 +6,7 @@ import com.perfomer.blitz.setTimeAgo
 import com.squareup.picasso.Picasso
 import com.utsman.hiyahiyahiya.model.features.UrlAttachment
 import com.utsman.hiyahiyahiya.model.row.RowChatItem
-import com.utsman.hiyahiyahiya.utils.Broadcast
+import com.utsman.hiyahiyahiya.model.types.LocalChatStatus
 import com.utsman.hiyahiyahiya.utils.click
 import kotlinx.android.synthetic.main.item_chat_me.view.*
 import kotlinx.android.synthetic.main.item_chat_me.view.img_send_indicator
@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.item_chat_other.view.tx_message_other
 import kotlinx.android.synthetic.main.item_chat_other_image.view.*
 import kotlinx.android.synthetic.main.item_chat_other_url.view.*
 import kotlinx.android.synthetic.main.item_list_empty.view.*
-import kotlinx.coroutines.GlobalScope
 
 class ItemChatMeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun bind(itemChatItem: RowChatItem.ChatItem) = itemView.run {
@@ -77,6 +76,7 @@ class ItemChatOtherViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun bind(itemChatItem: RowChatItem.ChatItem) = itemView.run {
         tx_message_other.text = itemChatItem.message
         tx_date_other.setTimeAgo(itemChatItem.time ?: 0L)
+        itemChatItem.localChatStatus = LocalChatStatus.NONE
         itemChatItem.postRead()
     }
 }
@@ -85,6 +85,7 @@ class ItemChatOtherImageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun bind(itemChatItem: RowChatItem.ChatItem) = itemView.run {
         tx_message_other.text = itemChatItem.message
         tx_date_other.setTimeAgo(itemChatItem.time ?: 0L)
+        itemChatItem.localChatStatus = LocalChatStatus.NONE
         itemChatItem.postRead()
 
         val url = if (itemChatItem.imageAttachment.first().imageBBSimple?.url != null) {
@@ -105,6 +106,7 @@ class ItemChatOtherUrlViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         tx_message_other.text = itemChatItem.message
         tx_date_other.setTimeAgo(itemChatItem.time ?: 0L)
         itemChatItem.postRead()
+        itemChatItem.localChatStatus = LocalChatStatus.NONE
 
         itemChatItem.urlAttachment?.let { url ->
             if (url == UrlAttachment()) card_url_other.visibility = View.GONE

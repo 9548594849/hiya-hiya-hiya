@@ -8,10 +8,12 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.utsman.hiyahiyahiya.R
+import com.utsman.hiyahiyahiya.data.UserPref
 import com.utsman.hiyahiyahiya.model.row.RowChatItem
 import com.utsman.hiyahiyahiya.model.types.LocalChatStatus
 import com.utsman.hiyahiyahiya.model.utils.messageStatusBody
 import com.utsman.hiyahiyahiya.utils.Broadcast
+import com.utsman.hiyahiyahiya.utils.logi
 import kotlinx.coroutines.GlobalScope
 
 fun ImageView.generateStatus(itemChatItem: RowChatItem.ChatItem) {
@@ -34,7 +36,10 @@ fun ImageView.generateStatus(itemChatItem: RowChatItem.ChatItem) {
 }
 
 fun RowChatItem.ChatItem.postRead() {
-    if (localChatStatus != LocalChatStatus.READ) {
+    logi("local message -> $message status --> $localChatStatus")
+    val isMe = from == UserPref.getUserId()
+    logi("is mee -> $isMe --> message $message")
+    if (localChatStatus != LocalChatStatus.READ && this.from != UserPref.getUserId()) {
         val localStatusBody = messageStatusBody {
             this.chatId = id
             this.ownerId = from ?: ""
